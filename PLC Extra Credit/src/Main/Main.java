@@ -26,8 +26,8 @@ public class Main {
 		//Get Lexemes
 		Scanner scan = new Scanner(file);
 		String input = new String();
-		
-		
+
+
 		while(scan.hasNext()) {
 			input = scan.next(); //input becomes the next token in the file
 			handleString(input);
@@ -51,14 +51,14 @@ public class Main {
 	public static void convertToken(String token) {
 		if(checkOperator(token) == true) {
 			handleOperator(token);
-			
+
 		} else if(checkKeyword(token) == true) {
 			handleKeyword(token);
-			
+
 		} else if(checkLiteral(token) == true) {
-			
+
 		}
-		
+
 	}
 
 
@@ -73,26 +73,26 @@ public class Main {
 			return false;
 		}
 	}
-	 
+
 	public static void handleOperator(String op) {
 		if(op.compareTo("+") == 0) { //adds addition operator to the list
 			OpToken optoken = new OpToken("+");
 			tokens.add(optoken);
-			
+
 		} else if(op.compareTo("-") == 0) { //adds subtraction operator to token list
 			OpToken optoken = new OpToken("-");
 			tokens.add(optoken);
-			
+
 		} else if(op.compareTo("*") == 0) { //addes multiplication operator to token list
 			OpToken optoken = new OpToken("*");
 			tokens.add(optoken);
-			
+
 		} else if(op.compareTo("/") == 0) { //addes division operator to token list
 			OpToken optoken = new OpToken("/");
 			tokens.add(optoken);
-			
+
 		}
-		
+
 	}
 
 	public static boolean checkKeyword(String key) {
@@ -116,85 +116,128 @@ public class Main {
 		default:
 			return false;
 		}
-	
+
 	}
 
 	public static void handleKeyword(String key) {
 		if(key.compareTo("new") == 0) {
 			KeywordToken keytoken = new KeywordToken("new");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("num") == 0) {
 			KeywordToken keytoken = new KeywordToken("num");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("real") == 0) {
 			KeywordToken keytoken = new KeywordToken("real");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("String") == 0) {
 			KeywordToken keytoken = new KeywordToken("String");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("is") == 0) {
 			KeywordToken keytoken = new KeywordToken("is");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("isnot") == 0) {
 			KeywordToken keytoken = new KeywordToken("isnot");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("for") == 0) {
 			KeywordToken keytoken = new KeywordToken("for");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("until") == 0) {
 			KeywordToken keytoken = new KeywordToken("until");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("perform") == 0) {
 			KeywordToken keytoken = new KeywordToken("perform");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("open") == 0) {
 			KeywordToken keytoken = new KeywordToken("open");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("closed") == 0) {
 			KeywordToken keytoken = new KeywordToken("closed");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("empty") == 0) {
 			KeywordToken keytoken = new KeywordToken("empty");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("skip") == 0) {
 			KeywordToken keytoken = new KeywordToken("skip");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("jump") == 0) {
 			KeywordToken keytoken = new KeywordToken("jump");
 			tokens.add(keytoken);
-			
+
 		} else if(key.compareTo("jump_out") == 0) {
 			KeywordToken keytoken = new KeywordToken("jump_out");
 			tokens.add(keytoken);
 		}
 	}
-	
+
 	public static boolean checkLiteral(String lit) {
+		boolean foundBool = false;
+
 		//check boolean literal
 		switch(lit) {
 		case "true":
 		case "false":
-		return true;
+			foundBool = true;
+		default:
+			foundBool = false;
+		}
+
+		if(foundBool == true) { //If a boolean was found to be true, we can return a true for the method
+			return true;
+		} else { //If a boolean wasn't found we need to check if its a num (integer) or real (double) value
+			
+			//check for real
+			if(checkReal(lit) == true) {
+				//convert lexeme to real_value token
+				
+			} else if(checkNum(lit) == true) {
+				
+			}
+			
+			
+			
 		}
 		
+		return false;
+	}
+
+	public static boolean checkReal(String real) {
+		char check; // this char variable will hold the last character of the passed string
+		check = real.charAt(real.length() - 1); //check is set to the last character of the string
 		
+		if(check == 'r') { //if the last character of the lexmeme is r, can assume the lexeme is to be converted to a real_value token
+			return true;
+		} else { //If the above isn't true, we need to check for a period to see if the lexeme is a real_value
+			for(int i = 0; i < real.length(); i++) {
+				check = real.charAt(0);
+				
+				if(check == '.') {
+					return true;
+				}
+			}
+		}
 		
 		
 		return false;
 	}
+	
+	public static boolean checkNum(String num) {
+		
+		return false;
+	}
+	
 	
 	public static void handleString(String str) {
 		if(hasSpecialCharacter(str) == false) {
